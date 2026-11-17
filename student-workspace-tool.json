@@ -6,7 +6,7 @@
   "owned_paths": ["knowledge/academics/", "artifacts/academic-planning/", ".student-workspace/academic-planning/"],
   "protected_paths": ["src/", "skills/"],
   "sqlite_files": ["knowledge/academics/schedules.sqlite"],
-  "check_command": ["academic-planning", "--workspace", "{workspace}", "check"],
+  "check_command": ["academic-planning", "--workspace", "{workspace}", "check", "--summary"],
   "setup_command": ["academic-planning", "--workspace", "{workspace}", "init"],
   "setup_options": [],
   "instructions": "docs/workspace-section.md",

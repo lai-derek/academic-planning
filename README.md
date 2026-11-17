@@ -30,11 +30,15 @@ The generated files are in `artifacts/academic-planning/`:
 (plus `Abroad-Brief.pdf` if you plan study abroad).
 
 To see a finished example first, open [examples/](examples/), or build a
-synthetic one from PowerShell in your workspace folder:
+synthetic one from PowerShell in your workspace folder. Each run needs a new
+folder, so this one includes the time:
 
 ```powershell
-.\tools\.venv\Scripts\academic-planning.exe --workspace "$env:TEMP\academic-demo" demo
+$demo = Join-Path $env:TEMP ("academic-demo-" + (Get-Date -Format "yyyyMMdd-HHmmss"))
+.\tools\.venv\Scripts\academic-planning.exe --workspace $demo demo
 ```
+
+The output lists the files it built in `$demo\artifacts\academic-planning`.
 
 More: [record formats](docs/records.md) (mostly for your agent),
 [how it fits the workspace](docs/integration.md), [validation](VALIDATION.md).

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "academic-planning"
-version = "0.3.0"
+version = "0.3.1"
 description = "AI-assisted UCLA course planning and scheduling in a student workspace"
 readme = "README.md"
 license = "MIT"

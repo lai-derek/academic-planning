@@ -41,6 +41,9 @@ class ToolTests(unittest.TestCase):
         goals.write_text(goals.read_text(encoding="utf-8") + "\nA changed goal.\n", encoding="utf-8")
         report = check_workspace(self.root)
         self.assertEqual((report["status"], report["exit_code"]), ("stale", 2))
+        detail = next(item["detail"] for item in report["results"] if item["name"] == "academic-planning")
+        self.assertEqual(len(detail), 1)
+        self.assertIn("outputs are out of date", detail[0])
 
 
 if __name__ == "__main__":

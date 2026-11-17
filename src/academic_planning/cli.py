@@ -12,6 +12,16 @@ from .core import PlanningError, Workspace, import_source
 from .records import demo, initialize
 
 
+def check_summary(result):
+    """One line for `student-workspace check`; the JSON form stays the agent interface."""
+    records = f"{result.get('requirements', 0)} requirements, {result.get('assignments', 0)} planned courses"
+    if result.get("outputs_stale"):
+        return f"{records}; outputs are out of date, run `academic-planning build`"
+    if not result.get("outputs_built"):
+        return f"{records}; outputs not built yet"
+    return f"{records}; outputs current"
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         prog="academic-planning",
@@ -25,7 +35,13 @@ def main(argv=None):
         help="Private workspace root (default: current directory)",
     )
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("check", "build", "demo"):
+    check = commands.add_parser("check")
+    check.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print one readable line instead of JSON (used by student-workspace check)",
+    )
+    for name in ("build", "demo"):
         commands.add_parser(name)
     init = commands.add_parser("init")
     init.add_argument(
@@ -56,7 +72,10 @@ def main(argv=None):
                 if args.command == "context"
                 else getattr(workspace, args.command)()
             )
-        print(json.dumps(result, indent=2, ensure_ascii=False))
+        if getattr(args, "summary", False):
+            print(check_summary(result))
+        else:
+            print(json.dumps(result, indent=2, ensure_ascii=False))
         return 2 if result.get("outputs_stale") else 0
     except (
         PlanningError,
